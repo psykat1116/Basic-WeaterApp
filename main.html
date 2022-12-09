@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/908828791a.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins&family=Roboto&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #6dd5fa;
+      }
+
+      .box {
+        position: relative;
+        height: 60vh;
+        width: 330px;
+        background: #86a8e7;
+        border-radius: 3px;
+        box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .box .wave {
+        position: absolute;
+        height: 100%;
+        width: 130%;
+        background: red;
+        border-radius: 50%;
+        bottom: -48%;
+        left: -10%;
+        animation: rotate 1.2s linear alternate infinite;
+      }
+
+      .box .wave1 {
+        background-color: #50c9c3;
+        border-radius: 45% 55% 63% 37% / 58% 61% 39% 42%;
+        /* opacity: 0.7; */
+      }
+      .box .wave2 {
+        border-radius: 45% 55% 63% 37% / 58% 61% 39% 42%;
+        background-color: #96deda;
+        /* opacity: 0.6; */
+        animation-delay: 0.4s;
+      }
+      .box .wave3 {
+        background-color: #00b4db;
+        border-radius: 45% 55% 63% 37% / 58% 61% 39% 42%;
+        /* opacity: 0.7; */
+        animation-delay: 0.8s;
+      }
+
+      @keyframes rotate {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .box #weathericon {
+        position: relative;
+        height: 50%;
+        /* background-color: red; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 4em;
+      }
+
+      .box .fa-sun {
+        color: #fdc830;
+      }
+
+      .box .fa-cloud {
+        color: #654ea3;
+      }
+
+      .box .fa-cloud-rain {
+        color: #0082c8;
+      }
+
+      .box .info {
+        position: relative;
+        width: 100%;
+        /* background-color: red; */
+        z-index: 1000;
+      }
+
+      .box .info h2 {
+        /* background-color: yellow; */
+        margin-top: 15px;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .box .info p,
+      .box .info h1,
+      .box .info h3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5px;
+        padding-top: -2px;
+      }
+
+      .box .info p,
+      .box .info h3,
+      .box .fa-street-view {
+        color: aquamarine;
+      }
+
+      .box .info h1,
+      .box .info h3 {
+        font-family: "Poppins", sans-serif;
+      }
+
+      .box .info #location{
+          font-size: 20px;
+        }
+
+      @media screen and (min-width:768px) and (max-width:1023px){
+        .box{
+            width:300px;
+        }
+        .box .info h1{
+            font-size: 18px;
+        }
+        .box .info #date{
+            font-size: 16px;
+            margin-top: -10px;
+        }
+
+        .box .info h2{
+            font-size: 14px;
+        }
+        .box .info h3{
+            font-size: 17px;
+        }
+      }
+
+      @media screen and (max-width:768px){
+        .box{
+            width:250px;
+        }
+        .box .info h1{
+            font-size: 16px;
+        }
+
+        .box .info h2{
+            font-size: 8px;
+        }
+
+        .box .info #date{
+            font-size: 16px;
+            margin-top: -10px;
+        }
+
+        .box .info h3{
+          font-size:15px;
+        }
+      }
+
+      @media screen and (min-width:1024px){
+        .box{
+            width:330px;
+        }
+
+        .box .info h1{
+            font-size: 20px;
+        }
+
+        .box .info #date{
+            font-size: 20px;
+            margin-top: -10px;
+        }
+
+        .box .info h2{
+            font-size: 8px;
+        }
+      }
+    </style>
+    <title>Weather-App</title>
+  </head>
+  <body>
+    <div class="box">
+      <div class="wave wave1"></div>
+      <div class="wave wave2"></div>
+      <div class="wave wave3"></div>
+
+      <div id="weathericon">
+        <i class="fas fa-solid fa-sun"></i>
+      </div>
+      <div class="info">
+        <h2 id="location">
+          <i class="fas fa-solid fa-street-view"></i>{%location%} || {%country%}
+        </h2>
+        <p id="date"></p>
+        <h1 id="temp">{%tempval%}&deg;C</h1>
+        <h3 id="minmaxtemp">Min {%tempmin%} &deg;C || Max {%tempmax%} &deg;C</h3>
+      </div>
+    </div>
+    <script>
+      const curDate = document.getElementById("date");
+      let weathericon = document.getElementById("weathericon");
+
+      const tempStatus = "{%tempstatus%}";
+
+      if(tempStatus=="Sunny"){
+        weathericon.innerHTML=`<i class="fas fa-solid fa-sun"></i>`;
+      }
+      else if(tempStatus=="Clouds"){
+        weathericon.innerHTML=`<i class="fas fa-solid fa-cloud-sun"></i></i>`
+      }
+      else if(tempStatus=="Rainy"){
+        weathericon.innerHTML=`<i class="fas fa-solid fa-cloud-rain"></i>`;
+      }
+      else{
+        weathericon.innerHTML=`<i class="fas fa-solid fa-cloud-sun"></i>`
+      }
+
+      const currDay = () => {
+        const day = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        let currentTime = new Date();
+
+        let Day = day[currentTime.getDay()];
+        return Day;
+      };
+
+      const currTime = () => {
+        const monthlist = [
+          "Jan",
+          "Fed",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        let lastTime = new Date();
+        let month = monthlist[lastTime.getMonth()];
+        let date = lastTime.getDate();
+
+        let hours = lastTime.getHours();
+        let mins = lastTime.getMinutes();
+
+        let period = "AM";
+
+        if (hours > 11) {
+          period = "PM";
+          if (hours > 12) {
+            hours -= 12;
+          }
+        }
+
+        if (mins < 10) {
+          mins = "0" + mins;
+        }
+
+        return `${month} ${date} || ${hours}:${mins} ${period}`;
+      };
+
+      curDate.innerHTML = currDay() + " || " + currTime();
+    </script>
+  </body>
+</html>
